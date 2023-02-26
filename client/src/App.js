@@ -12,8 +12,29 @@ class App extends React.Component {
     super()
     this.state = {
       input: "",
-      imageUrl: ""
+      imageUrl: "",
+      box: {}
     }
+  }
+
+  calculateFaceLocation(data) {
+    //const face = data.outputs.[0].data.regions[0].region_info.bounding_box
+    const image = document.getElementById('targetImage')
+    const width = Number(image.width)
+    const height = Number(image.height)
+    console.log(width, height)
+    /*
+    return {
+      leftCol: face.left_col * width,
+      topRow: face.top_row * height,
+      rightCol: width - (face.right_col * width),
+      bottomRow: height - (face.bottom_row * height)
+    }
+    */
+  }
+
+  displayBox(boxVals) {
+    this.setState({box: boxVals})
   }
 
   onInputChange = (event) => {
@@ -22,6 +43,10 @@ class App extends React.Component {
 
   onSubmit = (event) => {
     this.setState({imageUrl: this.state.input})
+    /*
+    const retVal = this.calculateFaceLocation(this.state.input)
+    this.displayBox(retVal)
+    */
   }
 
   render() {
@@ -32,7 +57,7 @@ class App extends React.Component {
         <Logo></Logo>
         <Rank></Rank>
         <ImageLinkForm inputChange={this.onInputChange} onSubmit={this.onSubmit}></ImageLinkForm>
-        <FaceRecognition image={this.state.imageUrl}></FaceRecognition>
+        <FaceRecognition image={this.state.imageUrl} box={this.state.box}></FaceRecognition>
       </div>
     );
   }
